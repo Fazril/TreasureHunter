@@ -96,18 +96,19 @@ public class Aventurier {
     /**
      * Affiche tous les trésors trouver par l'aventurier et sa valeur total en OR
      */
-    public void displayAllTreasuresFoundAndTotalValue(){
+    public StringBuilder displayAdventurerInfos(){
         int totalValue = 0;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n------------------------------------------------------\n");
-        stringBuilder.append("#### ").append(name).append(" - Treasures found : ")
-                .append(foundTreasure.size()).append("  ####\n");
+        stringBuilder.append("Nom : ").append(name);
+        stringBuilder.append("\nPosition : ").append(colonne).append("-").append(ligne);
+        stringBuilder.append("\n#### Treasures found : ").append(foundTreasure.size()).append("  ####\n");
         for (Tresor t: foundTreasure ) {
             stringBuilder.append("    - ").append(t.getNom()).append("\n");
             totalValue += t.getGoldValue();
         }
         stringBuilder.append("\nTotal Value : ").append(totalValue).append(" gold\n");
 
-        System.out.println(stringBuilder.toString());
+        return stringBuilder;
     }
 }

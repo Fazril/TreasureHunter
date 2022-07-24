@@ -19,6 +19,6 @@ public class Montagne extends Case{
      **/
     @Override
     public String display() {
-        return "[ T0 | M | x x ]";
+        return "[ T0 | M |  x x ]";
     }
 }

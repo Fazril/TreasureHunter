@@ -35,7 +35,7 @@ public class Carte {
      *          - A indique la présence d'un aventurier ( '-' si aucun aventurier présent)
      *          - N indique son orientation -> Nord : N / Ouest : O / Est : E / Sud : S ( '-' si aucun aventurier présent)
      **/
-    public void displayMap(){
+    public StringBuilder displayMap(){
         StringBuilder strB = new StringBuilder();
 
         // On affiche la première ligne indiquant les repères de largueur
@@ -45,24 +45,21 @@ public class Carte {
             strB.append("         ").append(i).append("       ").append(ESPACE_BTW_CASES);
         }
 
-        System.out.println(strB.toString());
-        // On clear le stringBuilder après l'affichage
-        strB.setLength(0);
-
+        strB.append("\n");
 
         for (int i = 1; i < ligne+1; i++) {
 
             // on construit la ligne à afficher (indice hauteur + suite de cases)
-            strB.append(" ").append(i).append(" ");
+            strB.append(" ").append(i).append("  ");
 
             for (int j = 1; j < colonne+1; j++) {
                 strB.append(map.get(j).get(i).display()).append(ESPACE_BTW_CASES);
             }
 
-            System.out.println(strB.toString());
-            // On clear le stringBuilder après l'affichage
-            strB.setLength(0);
+            strB.append("\n");
         }
+
+        return strB;
     }
 
     // Retourne la case en fonction des Coordonnées fournis (colonne & ligne)

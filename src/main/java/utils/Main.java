@@ -1,40 +1,50 @@
 package utils;
 
-import domaine.*;
-import exceptions.MountainCantHaveTreasorsException;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
 
-        // Création de trésors
-        List<Tresor> tresors = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            tresors.add(new Tresor());
-        }
+        Main main = new Main();
 
+        String mapFileName = "inputFiles/map.txt";
+        String AventurierFileName = "inputFiles/aventurier.txt";
 
-        GameController gameController = new GameController(6,5);
+        File mapFile = main.getFileFromResource(mapFileName);
+        File aventurierFile = main.getFileFromResource(AventurierFileName);
 
-        // Ajout d'une montagne sur le chemin pour tester l'évitement de l'aventurier
-        gameController.getCarte().setCaseFromCoord(3,1, new Montagne());
-
-        // On ajoute les trésors à la carte
-        try {
-            gameController.setTresors(2,2, tresors);
-        } catch (MountainCantHaveTreasorsException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Aventurier john = new Aventurier("John", 1, 1, EOrientation.EST, "AADADAGA");
-        gameController.addAdventurer(john);
+        GameController gameController = new GameController(mapFile,aventurierFile);
 
         System.out.println("======== Game Start =========\n");
         gameController.play();
         System.out.println("\n======== Game End =========");
+
+    }
+
+
+    /*
+       The resource URL is not working in the JAR
+       If we try to access a file that is inside a JAR,
+       It throws NoSuchFileException (linux), InvalidPathException (Windows)
+
+       Resource URL Sample: file:java-io.jar!/json/file1.json
+    */
+    private File getFileFromResource(String fileName) throws URISyntaxException {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+
+            // failed if files have whitespaces or special characters
+            //return new File(resource.getFile());
+
+            return new File(resource.toURI());
+        }
 
     }
 }

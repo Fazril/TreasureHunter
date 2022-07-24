@@ -16,4 +16,19 @@ public enum EOrientation {
     public String getInitiale() {
         return initiale;
     }
+
+    public static EOrientation retrieveByInitial(String n) {
+        switch (n) {
+            case "N":
+                return EOrientation.NORD;
+            case "O":
+                return EOrientation.OUEST;
+            case "E":
+                return EOrientation.EST;
+            case "S":
+                return EOrientation.SUD;
+            default:
+                return null;
+        }
+    }
 }
