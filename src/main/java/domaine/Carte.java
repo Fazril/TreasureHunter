@@ -1,17 +1,20 @@
 package domaine;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Carte {
 
+    private static Carte instance;
 
     public static final String ESPACE_BTW_CASES = "    ";
-    private HashMap<Integer,HashMap<Integer,Case>> map = new HashMap<>();
+    private Map<Integer,HashMap<Integer,Case>> map = Collections.synchronizedMap(new HashMap<>()) ;
     private int colonne;
     private int ligne;
 
 
-    public Carte(Integer largeur, Integer hauteur){
+    private Carte(Integer largeur, Integer hauteur){
         this.colonne = largeur;
         this.ligne = hauteur;
 
@@ -23,6 +26,20 @@ public class Carte {
             }
             map.put(i, tmpHashmap);
         }
+    }
+
+    /**
+     * Utilisation d'un singleton pour n'avoir qu'une seul instance de Carte partager à tout les aventuriers
+     *
+     * @param largeur   largeur de la carte
+     * @param hauteur   hauteur de la carte
+     * @return          The class instance
+     */
+    public static Carte getInstance(Integer largeur, Integer hauteur){
+        if (instance == null){
+            instance = new Carte(largeur,hauteur);
+        }
+        return instance;
     }
 
     /**
