@@ -176,7 +176,7 @@ public class GameController {
      */
     private void writeToFile() throws IOException {
 
-        File outputFile = new File("resources/outputFiles/output.txt");
+        File outputFile = new File("src/main/resources/outputFiles/output.txt");
         if (outputFile.createNewFile()){
             System.out.println("Fichier créer : " + outputFile.getName());
         }else {

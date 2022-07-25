@@ -65,13 +65,16 @@ public class Aventurier{
         return name;
     }
 
-
     public List<String> getActionList() {
         return actionList;
     }
 
     public void addFoundTreasure(Tresor tresor) {
         foundTreasure.add(tresor);
+    }
+
+    public List<Tresor> getFoundTreasure() {
+        return foundTreasure;
     }
 
     public EAventurierState getState() {
@@ -85,6 +88,9 @@ public class Aventurier{
     public void setMap(Carte map) {
         this.map = map;
     }
+
+
+    /* ---------------------------------------------------------------------------------------------------------------*/
 
     public void beginAdventure(CountDownLatch countDownLatch) {
         // On execute la méthode toutes les secondes
@@ -169,7 +175,7 @@ public class Aventurier{
     /**
      * Change l'orientation de l'aventurier
      */
-    private void rotateAdventurer(String direction){
+    public void rotateAdventurer(String direction){
         switch (this.orientation){
             case OUEST:
                 if (direction.equals("D")){
@@ -228,9 +234,6 @@ public class Aventurier{
             this.state = EAventurierState.IN_ACTION;
         }
 
-        //update Case in map
-        map.setCaseFromCoord(oldCase.colonne, oldCase.ligne, oldCase);
-        map.setCaseFromCoord(newCase.colonne, newCase.ligne, newCase);
     }
 
     /**
@@ -239,7 +242,7 @@ public class Aventurier{
      * @return                          La nouvelle case
      * @throws CantForwardException     Exception jeté lorsqu'il est impossible d'avancer pour l'aventurier
      */
-    private Case giveNextForwardCase() throws CantForwardException {
+    public Case giveNextForwardCase() throws CantForwardException {
 
         int localColonne = colonne;
         int localLigne = ligne;
@@ -259,7 +262,7 @@ public class Aventurier{
                 break;
         }
 
-        if (localColonne < 1 || localColonne == map.getColonne() || localLigne < 1 || localLigne == map.getLigne() ){
+        if (localColonne < 1 || localColonne > map.getColonne() || localLigne < 1 || localLigne > map.getLigne() ){
             throw new CantForwardException("L'aventurier ne peut pas sortir des limites de la carte");
         }
 
@@ -276,13 +279,11 @@ public class Aventurier{
      *
      * @param plaine        La case où ce trouve le trésor
      */
-    private void pickUpTreasor( Plaine plaine) {
+    public void pickUpTreasor( Plaine plaine) {
         addFoundTreasure( plaine.giveOneTresor() );
         if (plaine.getTresors().isEmpty()){
             this.state = EAventurierState.READY_FOR_NEXT_ACTION;
         }
-        // Update case in map
-        map.setCaseFromCoord(plaine.colonne, plaine.ligne, plaine);
     }
 
     /**
@@ -302,7 +303,7 @@ public class Aventurier{
         state = EAventurierState.READY_FOR_NEXT_ACTION;
     }
 
-    public void removeFirstAction(){
+    private void removeFirstAction(){
         actionList = actionList.subList(1,actionList.size());
     }
 
